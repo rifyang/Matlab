@@ -1,0 +1,29 @@
+% Define parameters
+k0 = 0.005; % Given rate constant, watch out for unit
+R1 = k0 * [2 -1  0 -1  0;
+                    -1  2 -1  0  0;
+                     0 -1  2  0 -1;
+                    -1  0  0  2 -1;
+                     0  0 -1 -1  2]; % Matrix A
+
+Y0 = [1; 0; 0; 0; 0]; % Initial condition (column vector)
+tspan = [1, 1000]; % Time span in ms
+
+% Define the matrix ODE function
+matrix_ode = @(t, Y) -R1 * Y;
+
+% Solve the ODE using ode45
+[t, Y] = ode45(matrix_ode, tspan, Y0);
+
+% Plot the results
+figure;
+plot(t, Y);
+xlabel('Time (ms)');
+ylabel('Distribution');
+title('Solution of dY/dt = R1 * Y');
+legend('Y1', 'Y2', 'Y3', 'Y4', 'Y5');
+grid on;
+
+% Display final concentrations at t = 1000 ms
+disp('Final concentrations at t = 1000 ms:');
+disp(Y(end, :));
